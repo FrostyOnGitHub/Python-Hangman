@@ -1,94 +1,127 @@
-
-ArrayList<String> letters = new ArrayList<String>();
-String[] list = { "word", "ludo", "char", "math"};
-String toGuess;
-String[] word;
+//Link genAlg to program
+//make evolution
 
 
-NeuralNetwork brain;
 
-int lives = 6;
+int pop = 10;
+String[] list = { "word", "ludo", "char", "math", "food", "fogg"};
+
+
+
+ArrayList<Gallow> gallows = new ArrayList<Gallow>();
+ArrayList<Gallow> savedGallows = new ArrayList<Gallow>();
+
+Gallow g;
+
+
 
 void setup() {
+  println("start");
+
+  for (int i = 0; i < 32; i++) {
+    print(97 + i, char(97+i), " ");
+  }
+  println();
+
+
   size(800, 800); 
 
-  for (int i = 0; i < 26; i++) {
-    letters.add(str(char(97+i)));
-  }
-  toGuess = list[int(random(list.length))];
-  println(toGuess, toGuess.length());
-  word = new String[toGuess.length()];
-  for (int i = 0; i < toGuess.length(); i++) {
-    word[i] = "";
-  }
+  //g = new Gallow(null);
 
 
-  brain = new NeuralNetwork(32, 10, 5);
-  
-  prepareData();
+  for (int i = 0; i < pop; i++) {
+    gallows.add(new Gallow(null));
+  }
+
+  //println(g.toGuess);
+
+
+  g = new Gallow(null);
+
+  //brain = new NeuralNetwork(32, 10, 5);
 }
 
 
 void draw() {
   background(50);
 
-  textSize(100);
-  stroke(255);
-  for (int i = 0; i < toGuess.length(); i++) {
-    //text(toGuess.charAt(i), 100 + i*100, height-110);  
-    text(word[i], 100 + i*100, height-110);  
-    line(110 + i*100, height - 100, 190 + i*100, height - 100);
+  g.show();
+
+  g.checkWin();
+
+
+  if (g.hanged()) {
+    g.Setup();
+  } else if (g.isWin()) {
+    g.Setup();
+    delay(1000);
   }
 
-  checkWin();
+  for (int i = 0; i < gallows.size(); i++) { //Gallow g_ : gallows) {
+    Gallow g_ = gallows.get(i);
+    g_.think();
+    //println("guess ", g_.makeGuess(), "lives ", g_.lives, "toGuess ", g_.toGuess, "score ", g_.score, "letters ", g_.letters);
+    if (i == gallows.size()-1) {
+      //println();  
+    }
+  }
+  //println();
 
-  text(lives, 0, 100);
+  for (int j = gallows.size()-1; j >= 0; j--) {
+    if (gallows.get(j).hanged() || gallows.get(j).isWin()) {
+      savedGallows.add(gallows.get(j));
+      gallows.remove(j);
+    }
+  }
+  
+ if (gallows.size() == 0) {
+    //println();
+    //println();
+
+    nextGeneration();
+    println("next gen");
+  }
+
+  //println(gallows.size());
 }
 
 
 
 //---------------------------------------------------------//
-//  NN functions
-float[] getInputs() {
-  float[] data = new float[32];
-  for (int i = 0; i < 26; i++) {
-    if (eltInList(str(char(97+i)), letters)) {
-      data[i] = 0.5;
-    } else if (eltInArr(str(char(97+i)), word)) {
-      data[i] = 1;
-    } else {
-      data[i] = 0;
-    }
+//actions
+void mousePressed() {
+
+  //g.murderer = gallows.get(0).murderer;
+  char ai = gallows.get(0).makeGuess();
+  g.addLetter(str(ai));
+  text(ai, width/2, height/2);
+  //println(ai);
+  //g.think();
+  //println(gé
+
+
+  if (mouseButton == RIGHT) {
+    noLoop();
+  } else {
+    loop();
   }
 
-
-  for (int i = 0; i < 5; i++) {
-    if (i < word.length) {
-      if (word[i].equals("")) {
-        data[26+i] = 1;
-      } else {
-        data[26+i] = letterToNeuron(word[i].charAt(0));
-      }
-    } else {
-      data[26+i] = -1;
-    }
-  }
-  return data;
+ 
 }
 
-char makeGuess() {
-  float[] inputs = getInputs();
+void keyPressed() {
+  String guess = str(key);
 
-  println(inputs);
+  g.addLetter(guess);
 
-  float[] guess = brain.feedforward(inputs);
-
-  println();
-  println(guess);
-
-  println(NeuronToLetter(guess));
-  return NeuronToLetter(guess);
+  println(g.letters);
+  //makeGuess();
 }
+
+
+
+
+
 
 float letterToNeuron(char s) {
   float ascii = getAscii(s);
@@ -109,92 +142,7 @@ char NeuronToLetter(float[] f) {
   return answer;
 }
 
-void prepareData() {
-  String[] inputs = new String[list.length * 4];
-  char[] target = new char[list.length * 4];
-  for (int i = 0; i < list.length; i++) {
-    for (int j = 0; j < list[i].length(); j++) {
-      inputs[i*list[i].length()+j] = list[i].replace(list[i].charAt(j),char(32)); 
-      target[i*list[i].length()+j] = list[i].charAt(j);
-    }
-  }
-  for (int i = 0; i < inputs.length; i++) {
-    println(inputs[i], " -> ", target[i]);  
-  }
-}
 
-
-
-void trainEpoch() {
-
-  //float[] 
-
-  //brain.train(
-}
-
-
-
-
-
-//---------------------------------------------------------//
-//game logic
-void addLetter(String guess) {
-  for (int i = 0; i < letters.size(); i++) {
-    if (letters.get(i).equals(guess)) {
-
-      int placed = 0;
-      for (int j = 0; j < toGuess.length(); j++) {
-        if (guess.equals(str(toGuess.charAt(j)))) {
-          word[j] = guess;
-          placed ++;
-        }
-      }
-      letters.remove(i);
-
-      if (placed != 0) {
-
-        break;
-      } else {
-        lives--;
-      }
-    }
-  }
-}
-
-void checkWin() {
-  boolean b = true;
-  for (int i = 0; i < toGuess.length(); i++) {
-    if (!word[i].equals(str(toGuess.charAt(i)))) {
-      b = false;
-    }
-  }
-
-  if (b) {
-    text("win!", width/2, height/2);
-  }
-
-  if (lives <= 0) {
-    text("lose!", width/2, height/2);
-  }
-}
-
-
-//---------------------------------------------------------//
-//actions
-void mousePressed() {
-  char ai = makeGuess();
-  addLetter(str(ai));
-  println(ai);
-}
-
-void keyPressed() {
-  String guess = str(key);
-
-  addLetter(guess);
-
-  println(letters);
-  makeGuess();
-}
 
 
 
