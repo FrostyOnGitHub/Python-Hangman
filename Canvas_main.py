@@ -124,3 +124,4 @@ button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1
 button2.place(anchor='n', relx=0.7, rely=0.6, relwidth=0.4, relheight=0.2)
 
 Canvas.update()
+tk.mainloop()
