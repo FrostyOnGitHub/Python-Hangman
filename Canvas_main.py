@@ -62,10 +62,10 @@ def jouer():
         def cercle(i,j):
             circle = Canvas.create_oval(i*138,j*138,(i+1)*138,(j+1)*138,width=2,tag="cercle")
             
-button1 = Button(tk, text="JOUER", font='Times 10 bold', bg='spring green', fg='black', height=1, width=1, command = jouer)
+button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='spring green', fg='black', height=1, width=1, command = jouer)
 button1.place(anchor='n', relx=0.3, rely=0.6, relwidth=0.4, relheight=0.2)
 
-button2 = Button(tk, text="RÈGLES DU JEU", font='Times 10 bold', bg='firebrick1', fg='black', height=1, width=1, command=regles)
+button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', height=1, width=1, command=regles)
 button2.place(anchor='n', relx=0.7, rely=0.6, relwidth=0.4, relheight=0.2)
 
 Canvas.update()
