@@ -1,11 +1,12 @@
 from tkinter import *
 tk=Tk()
 tk.geometry('1794x700')
+tk.configure(bg="deep sky blue")
 tk.title("Jeu du Pendu")
 Canvas=Canvas(tk, bg="deep sky blue", width=1794, height=700)
 tk.resizable(False, False)
 Canvas.place(x=0,y=0)
-
+letters=[]
 message1 = Label( tk, text="Bienvenue au jeu du Pendu!", font='Times 50 bold', bg='deep sky blue', fg='black')
 message1.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
 
@@ -22,9 +23,18 @@ def regles():
     button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = jouer)
     button3=place(anchor='n', relx=0.3, rely=0.6, relwidth=0.4, relheight=0.2)
     
+def check():
+    if checking = 1:
+        
+def setup():
+    for i in range(26):
+        letters.append(chr(97+i))
+        
+        
 def jouer():
     
     Canvas=Canvas(tk, bg="deep sky blue", width=1780, height=470)
+    tk.configure(bg="deep sky blue")
     Canvas.place(x=0,y=0)
 
 
@@ -107,11 +117,10 @@ def jouer():
     button1.place(anchor='n', relx=0.736, rely=0.88, relwidth=0.1, relheight=0.1)
 
             
-button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='spring green', fg='black', height=1, width=1, command = jouer)
+button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='spring green', fg='black', activebackground= "green" height=1, width=1, command = jouer)
 button1.place(anchor='n', relx=0.3, rely=0.6, relwidth=0.4, relheight=0.2)
 
-button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', height=1, width=1, command=regles)
+button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command=regles)
 button2.place(anchor='n', relx=0.7, rely=0.6, relwidth=0.4, relheight=0.2)
 
 Canvas.update()
-tk.mainloop()
