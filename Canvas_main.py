@@ -14,6 +14,7 @@ count=0
 buttons=[]
 word=[ ]
 letters=[ ]
+Ai_status=False
 alreadytried=[ ]
 buttonx=[0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.247,0.345,0.443,0.540,0.638,0.736]
 buttony=[0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.88,0.88,0.88,0.88,0.88,0.88]
@@ -135,13 +136,14 @@ def phase1():
     message1.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
 
     
-    message2.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.355)
+    message2.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.180)
     
      
-    button1.place(anchor='n', relx=0.3, rely=0.6, relwidth=0.4, relheight=0.2)
-
+    button1.place(anchor='n', relx=0.3, rely=0.55, relwidth=0.4, relheight=0.2)
+    
+    buttonAI.place(anchor='n', relx=0.5, rely=0.75, relwidth=0.4, relheight=0.2)
    
-    button2.place(anchor='n', relx=0.7, rely=0.6, relwidth=0.4, relheight=0.2)
+    button2.place(anchor='n', relx=0.7, rely=0.55, relwidth=0.4, relheight=0.2)
    
 
 def phase1_end() :
@@ -149,7 +151,6 @@ def phase1_end() :
     message2.destroy()
     #button1.destroy()
     button2.destroy()
-    
 
     
 def phase2():
@@ -158,9 +159,11 @@ def phase2():
    
     message3.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
    
-    message4.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.355)
+    message4.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.180)
     
-    button1.place(anchor='n', relx=0.5, rely=0.6, relwidth=0.8, relheight=0.2)
+    button1.place(anchor='n', relx=0.5, rely=0.55, relwidth=0.8, relheight=0.2)
+    
+    buttonAI.place(anchor='n', relx=0.5, rely=0.75, relwidth=0.8, relheight=0.2)
     
     #phase2_effacer()
     
@@ -168,9 +171,14 @@ def phase2_end() :
     message3.destroy()
     message4.destroy()
     button1.destroy()
+    buttonAI.destroy()
     
+def key_pressed(event) :
+    if not Ai_status:
+        key = event.char
+        addLetter(key)
     
-    
+
    
 button3 = Button(tk, text="A", font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter("a"))
 buttons.append(button3)
@@ -278,7 +286,7 @@ def phase3_setup() :
     for i in range(len(buttons)):
         buttons[i].config(bg="slate gray")
         buttons[i].place(anchor='n', relx=buttonx[i], rely=buttony[i], relwidth=0.1, relheight=0.1)
-       
+    tk.bind('<Key>', key_pressed)    
 
         
     
@@ -297,12 +305,40 @@ def phase3():
 
 
     
+    
+def phaseAI():
+     Ai_status=True
+     game_phase[0]=3
+     Canvas.place(x=0, y=0)
+     Canvas.create_line(10,470-10,50,470-10)
+     Canvas.create_line(30,470-10,30,50)
+     Canvas.create_line(30,50,200,50)
+     
+     
+def phaseAI_setup():
+    for i in range(len(toguess)):
+        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+    entry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold")
+    entry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.4,relheight=0.2)
+    buttonAI.destroy()
+    button1.destroy()   
+    message3.destroy()
+    message4.destroy()
+     
+     
+    button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup(), phaseAI_setup()])
+    button6.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
+    button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [])
+    button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
+    
+    
+buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
 button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
 button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
 message1 = Label( tk, text="Bienvenue au jeu du Pendu!", font='Times 50 bold', bg='deep sky blue', fg='black')
 message2 = Label( tk, text="Pour commencer appuyez sur JOUER", font='Times 20 bold', bg='deep sky blue', fg='black')
-message3 = Label( tk, text="Votre but est de trouver le mot mystere avant que le dessin du pendu soit finit.", font='Times 30 bold', bg='deep sky blue', fg='black')
-message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les touches sur votre clavier pour jouer. Bonne chance!", font='Times 20 bold', bg='deep sky blue', fg='black')
+message3 = Label( tk, text="Votre but est de trouver le mot mystere avant \n que le dessin du pendu soit finit.", font='Times 30 bold', bg='deep sky blue', fg='black')
+message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les touches sur votre clavier pour jouer. \n Bonne chance!", font='Times 20 bold', bg='deep sky blue', fg='black')
 #button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = lambda : [phase2_end(), phase1()] )
 #button3= Button(tk, text="Play", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase3)
 
@@ -331,6 +367,8 @@ while True:
         
     elif (game_phase[0] == 2) :
         phase3()
+    elif(game_phase[0]== 3):
+        phaseAI()
         
 Canvas.update()
 
