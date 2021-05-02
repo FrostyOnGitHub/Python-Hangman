@@ -23,6 +23,9 @@ tk.title("Jeu de Pendu")
 toguess=""
 
     
+alreadytriedBad = []
+
+
 def process_data():
     fiveLetterWords= []
     f = open("germinal.txt",'r') 
@@ -87,6 +90,7 @@ def addLetter(guess) :
 
                 break
             else :
+                alreadytriedBad.append(guess)
                 boom()
                 buttons[ord(guess)-97].config(bg="red")
                 print("placed", placed)
@@ -261,7 +265,7 @@ buttons.append(button3)
 
 
 def restart_game():
-    global button3, count, buttons, word, letters, toguess, alreadytried
+    global button3, count, buttons, word, letters, toguess, alreadytried,alreadytriedBad
     Canvas.delete("hang")
     Canvas.delete("text")
     Canvas.delete("oldline")
@@ -270,6 +274,7 @@ def restart_game():
     alreadytried=[]
     word=[ ]
     letters=[ ]
+    alreadytriedBad=[]
     print(alreadytried, "alreadytried")
     print(letters,"letters")
     print(toguess,"toguess")
@@ -318,8 +323,14 @@ def phaseAI():
 def phaseAI_setup():
     for i in range(len(toguess)):
         Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
-    entry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold")
+        
+    entry_text = StringVar()
+    entry = Entry(tk, bg="white", textvariable = entry_text, bd="1", cursor="dot", font = "Times 20 bold")
     entry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.4,relheight=0.2)
+    
+    entry.bind('<Return>', set_toguess(entry.get())) 
+
+    
     buttonAI.destroy()
     button1.destroy()   
     message3.destroy()
@@ -328,8 +339,13 @@ def phaseAI_setup():
      
     button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup(), phaseAI_setup()])
     button6.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
-    button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [])
+    button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [AI_Make_Guess()])
     button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
+    
+    
+    
+    #button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [set_toguess(entry_text).get()])
+    #button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
     
     
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
@@ -343,6 +359,74 @@ message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les to
 #button3= Button(tk, text="Play", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase3)
 
 
+def set_toguess(w) :
+    toguess = w
+
+
+def get_probs(c_):
+    probs = []
+    
+    #Generate Sublist
+    subList = []
+    
+    for s in (wordlist) :
+        if (len(s) == len(c_)) :
+            areIn = True
+            
+            for i in range(len(c_)) :
+                if (c_[i] != "") :
+                    if (c_[i] != s[i]) :
+                        areIn = False
+                        break
+                for j in range(len(alreadytriedBad)) :
+                    if (alreadytriedBad[j] == s[i] ) :
+                        areIn = False
+                        break
+                if (not areIn) :
+                    break
+                
+                
+            if (areIn) :
+                subList.append(s)
+                
+    #print("subList : ", subList)
+    
+    #Find Probs                
+    for l in range(26) :
+        c = chr(97+l)
+        inUsed = False
+        
+        for i in range(len(alreadytried)):
+            if (c == alreadytried[i]) :
+                inUsed = True
+                
+        if (not inUsed) :
+            
+            nbWord = 0
+            for s in (subList) :
+                for i in range(len(s)) :
+                    if (c == s[i]) :
+                        nbWord+=1
+            probs.append(nbWord / len(subList))
+        else :
+             probs.append(0)
+            
+        #print(c, ":",  probs[l], end=" | ")
+            
+    guess = chr(probs.index(max(probs))+97)
+
+            
+    return guess
+
+
+def AI_Make_Guess() :
+    guess = get_probs(word)
+    addLetter(guess)
+    print("AI guessed ", guess)
+    
+    
+    
+
 
 
 
@@ -355,7 +439,7 @@ setup()
 
 
 while True:
-    #print(game_phase)
+    #print("toguess", toguess)
     tk.update_idletasks()
     tk.update()
 
@@ -373,6 +457,5 @@ while True:
 Canvas.update()
 
 tk.mainloop()
-
 
 
