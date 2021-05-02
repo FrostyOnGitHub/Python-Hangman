@@ -1,3 +1,28 @@
+fiveLetterWords= []
+f = open("germinal.txt",'r') 
+ligne = f.readline()
+while ligne!='':
+    ligne = ligne.replace(',','')
+    ligne = ligne.replace('.','')
+    ligne = ligne.replace(';','')
+    ligne = ligne.replace(':','')
+    ligne = ligne.replace("'",' ') 
+    ligne = ligne.replace('  ',' ')
+    ligne = ligne.replace('\n','')
+    t=ligne.split(' ') 
+    ligne = f.readline()
+    
+    for word in t:
+        if len(word) > 4:
+            isgood= True
+            for s in word:
+                if not (97<= ord(s) and ord(s)<= 97+26):
+                    isgood= False
+            if isgood:
+                fiveLetterWords.append(word)
+print(fiveLetterWords)
+
+
 from tkinter import *
 import random as r
 import tkinter.messagebox
