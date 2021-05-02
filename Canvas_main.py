@@ -1,4 +1,6 @@
 from tkinter import *
+import random as r
+import tkinter.messagebox
 tk=Tk()
 tk.geometry('1794x700')
 tk.configure(bg="deep sky blue")
@@ -67,7 +69,7 @@ def phase2():
    
     message4.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.355)
     
-    button1.configure(relx=1)
+    button1.place(anchor='n', relx=0.5, rely=0.6, relwidth=0.8, relheight=0.2)
     
     #phase2_effacer()
     
@@ -83,25 +85,7 @@ button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black',
 button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
 message1 = Label( tk, text="Bienvenue au jeu du Pendu!", font='Times 50 bold', bg='deep sky blue', fg='black')
 message2 = Label( tk, text="Pour commencer appuyez sur JOUER", font='Times 20 bold', bg='deep sky blue', fg='black')
-message3 = Label( tk, text="Votre but est de trouver le mot mystere avant que le dessin du pendu soit finit.", font='Times 50 bold', bg='deep sky blue', fg='black')
+message3 = Label( tk, text="Votre but est de trouver le mot mystere avant que le dessin du pendu soit finit.", font='Times 30 bold', bg='deep sky blue', fg='black')
 message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les touches sur votre clavier pour jouer. Bonne chance!", font='Times 20 bold', bg='deep sky blue', fg='black')
 #button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = lambda : [phase2_end(), phase1()] )
 #button3= Button(tk, text="Play", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase3)
-
-
-
-while True:
-    print(game_phase)
-    tk.update_idletasks()
-    tk.update()
-
-    if (game_phase[0] == 0) :   
-        phase1()
-
-    elif (game_phase[0] == 1) :
-        phase2()
-        
-    elif (game_phase[0] == 2) :
-        phase3()
-        
-    
