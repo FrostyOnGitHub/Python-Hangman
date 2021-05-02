@@ -1,5 +1,7 @@
 from tkinter import *
 import random as r
+import tkinter.messagebox
+
 tk=Tk()
 tk.geometry('1794x700')
 tk.configure(bg="deep sky blue")
@@ -11,8 +13,10 @@ toguess=""
 #buttonx=[0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.247,0.345,0.443,0.540,0.638,0.736]
 #buttony=[0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.88,0.88,0.88,0.88,0.88,0.88]
 
-word=[]
-letters=[]
+word=[ ]
+letters=[ ]
+alreadytried=[ ]
+
 
 Canvas=Canvas(tk, bg="deep sky blue", width=1794, height=470)
 radius = 30
@@ -21,15 +25,20 @@ def create():
     global toguess, word
     Canvas.place(x=0,y=0)
 
-    Canvas.create_line(10,50-10,50,50-10)
-    Canvas.create_line(30,50-10,30,50)
+    Canvas.create_line(10,470-10,50,470-10)
+    Canvas.create_line(30,470-10,30,50)
     Canvas.create_line(30,50,200,50)
 
     print("t", toguess)
     for i in range(len(toguess)):
-        Canvas.create_line(200+60*i,41,200+60*(i+1)-10,41)
-
+        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341)
         
+#------------------------------REVIEW---------------------------
+# def help_placeholder():
+#     global toguess
+#     placeholder = toguess[r.randint(0,len(toguess))]
+#     print(placeholder)
+#     Canvas.create_text(680+60*i,330,fill="darkblue",font="Times 20 bold",text=placeholder)       
         
 
 def setup():
@@ -41,21 +50,21 @@ def setup():
         word.append("")
         print(toguess[i])
         
-        
+
+
+
 def addLetter(guess) :
-    global letters
+    global letters , alreadytried
     for i in range(len(letters)) :
         placed = 0
-        if letters[i] == guess :        
+        if letters[i] == guess :
+            letters.remove(guess)
             for j in range(len(toguess)):
                 if guess == toguess[j] :
                     print(guess)
                     word[j] = guess
                     placed += 1
-                    
-    
-                    
-            letters.remove(guess)
+
             
             if placed != 0 :
 
@@ -63,22 +72,38 @@ def addLetter(guess) :
             else :
                 boom()
                 print(placed)
+                break
+        else :
+            isin = False
+            for x in range(len(alreadytried)):
+                
+                if alreadytried[x] == guess:
+                    isin=True
+                    tkinter.messagebox.showinfo("Hangman", "Lettre déja utilisée!")
+                    break
+            if isin:
+                break
     for i in range(len(word)):
-        Canvas.create_text(200+60*i,30,fill="darkblue",font="Times 20 italic bold",text=word[i] )
-        
-        
+        Canvas.create_text(680+60*i,330,fill="darkblue",font="Times 20 bold",text=word[i] )
+    alreadytried.append(guess)
+   
+
+
+     
+    
 def boom():
     global count
     count+=1
-    if count >= 1: 
+    
+    if count >= 1: #Draw hook
         Canvas.create_line(200,50,200,70,tags="hang")
     if count >= 2: #Draw face
-        Canvas.create_line(200-radius, 100-radius,
+        Canvas.create_oval(200-radius, 100-radius,
                            200+radius, 100+radius, tags="hang")
     if count >= 3: #Draw first arm
-        Canvas.create_line(170,100,100,150,tags="hang")
+        Canvas.create_line(200,150,100,100,tags="hang")
     if count >= 4: #Draw second arm
-        Canvas.create_line(230,100,300,150,tags="hang")
+        Canvas.create_line(200,150,300,100,tags="hang")
     if count >= 5: #Draw body length
         Canvas.create_line(200,130,200,250,tags="hang")
     if count >= 6: #Draw one leg
@@ -175,3 +200,4 @@ print(letters)
 Canvas.update()
 
 tk.mainloop()
+
