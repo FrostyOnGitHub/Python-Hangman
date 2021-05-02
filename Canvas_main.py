@@ -37,12 +37,13 @@ def process_data():
         
         for word in t:
             if len(word) > 4:
-                isgood= True
-                for s in word:
-                    if not (97<= ord(s) and ord(s)<= 97+26):
-                        isgood= False
-                if isgood:
-                    fiveLetterWords.append(word)
+                if word not in fiveLetterWords :
+                    isgood= True
+                    for s in word:
+                        if not (97<= ord(s) and ord(s)<= 97+26):
+                            isgood= False
+                    if isgood:
+                        fiveLetterWords.append(word)
     return fiveLetterWords
     
 
@@ -53,10 +54,12 @@ def setup():
     for i in range(26):
         letters.append(chr(97+i))
     wordlist=process_data()
+    
+    print("len(w)", len(wordlist))
     toguess=wordlist[r.randint(0,len(wordlist)-1)]
     for i in range(len(toguess)):
         word.append("")
-        print(toguess[i])
+        print(toguess[i], end="")
         
         
 
@@ -83,7 +86,7 @@ def addLetter(guess) :
             else :
                 boom()
                 buttons[ord(guess)-97].config(bg="red")
-                print(placed)
+                print("placed", placed)
                 break
         else :
             isin = False
@@ -159,18 +162,12 @@ def phase2():
     
     #phase2_effacer()
     
+def phase2_end() :
+    message3.destroy()
+    message4.destroy()
+    button1.destroy()
     
-     
-def phase3():
-    global toguess, word
-    game_phase[0]=2
-    
-    Canvas.place(x=0,y=0)
-
-    Canvas.create_line(10,470-10,50,470-10)
-    Canvas.create_line(30,470-10,30,50)
-    Canvas.create_line(30,50,200,50)
-
+def phase3_setup() :
     print("t", toguess)
     for i in range(len(toguess)):
         Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341)
@@ -278,7 +275,20 @@ def phase3():
     button3.place(anchor='n', relx=0.736, rely=0.88, relwidth=0.1, relheight=0.1)
     buttons.append(button3)
     
-button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=phase3)
+    
+def phase3():
+    global toguess, word
+    game_phase[0]=2
+    
+    Canvas.place(x=0,y=0)
+
+    Canvas.create_line(10,470-10,50,470-10)
+    Canvas.create_line(30,470-10,30,50)
+    Canvas.create_line(30,50,200,50)
+
+
+    
+button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
 button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
 message1 = Label( tk, text="Bienvenue au jeu du Pendu!", font='Times 50 bold', bg='deep sky blue', fg='black')
 message2 = Label( tk, text="Pour commencer appuyez sur JOUER", font='Times 20 bold', bg='deep sky blue', fg='black')
@@ -294,13 +304,13 @@ message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les to
 
 setup()
 
-print(letters)
+#print(letters)
 
 
 
 
 while True:
-    print(game_phase)
+    #print(game_phase)
     tk.update_idletasks()
     tk.update()
 
@@ -316,4 +326,5 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
