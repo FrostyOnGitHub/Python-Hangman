@@ -110,11 +110,11 @@ def boom():
         Canvas.create_line(200,250,300,300,tags="hang")
  
 
-button1 = Button(tk, text="A", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("A"))
+button1 = Button(tk, text="A", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("a"))
 button1.place(anchor='n', relx=0.050, rely=0.68, relwidth=0.1, relheight=0.1)
 buttons.append(button1)
 
-button1 = Button(tk, text="B", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("B"))
+button1 = Button(tk, text="B", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("b"))
 button1.place(anchor='n', relx=0.150, rely=0.68, relwidth=0.1, relheight=0.1)
 buttons.append(button1)
 
