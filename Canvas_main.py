@@ -37,7 +37,6 @@ def addLetter(guess) :
 
 def phase1():
     game_phase[0]=0
-    
     Canvas.place(x=0,y=0)
     
     message1.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
@@ -52,23 +51,27 @@ def phase1():
     button2.place(anchor='n', relx=0.7, rely=0.6, relwidth=0.4, relheight=0.2)
    
 
-def phase2_effacer():
-    message3.grid_forget()
-    message4.grid_forget()
-    button3.grid_forget()
-    print("a")
+def phase1_end() :
+    message1.destroy()
+    message2.destroy()
+    #button1.destroy()
+    button2.destroy()
+    
+
     
 def phase2():
-    
+
     game_phase[0]=1
    
     message3.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
    
     message4.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.355)
     
-    button3.place(anchor='n', relx=0.3, rely=0.6, relwidth=0.4, relheight=0.2)
+    button1.configure(relx=1)
     
-    phase2_effacer()
+    #phase2_effacer()
+    
+    
      
 def phase3():
     game_phase[0]=2
@@ -76,13 +79,16 @@ def phase3():
     tk.configure(bg="deep sky blue")
     Canvas.place(x=0,y=0)
     
-button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=pahse3)
-button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command=phase2)
+button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=phase3)
+button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
 message1 = Label( tk, text="Bienvenue au jeu du Pendu!", font='Times 50 bold', bg='deep sky blue', fg='black')
 message2 = Label( tk, text="Pour commencer appuyez sur JOUER", font='Times 20 bold', bg='deep sky blue', fg='black')
 message3 = Label( tk, text="Votre but est de trouver le mot mystere avant que le dessin du pendu soit finit.", font='Times 50 bold', bg='deep sky blue', fg='black')
 message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les touches sur votre clavier pour jouer. Bonne chance!", font='Times 20 bold', bg='deep sky blue', fg='black')
-button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase1)
+#button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = lambda : [phase2_end(), phase1()] )
+#button3= Button(tk, text="Play", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase3)
+
+
 
 while True:
     print(game_phase)
