@@ -21,7 +21,7 @@ buttony=[0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.78,0.78,0.78,0.78,0
 tk.title("Jeu de Pendu")
 #wordlist=["sebastien","memoire","secondes"]
 toguess=""
-
+keyword_array=[]
     
 alreadytriedBad = []
 
@@ -108,7 +108,7 @@ def addLetter(guess) :
     for i in range(len(word)):
         Canvas.create_text(680+60*i,325,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
     alreadytried.append(guess)
-   
+    check_win() 
 
     
     
@@ -262,19 +262,32 @@ buttons.append(button3)
 button3 = Button(tk, text="Z", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("z"))
 buttons.append(button3)
 
+def check_win():
+    global word, togues, count, alreadytried, buttons
+    isWin = True
+    for i in range(len(word)) :
+        if word[i] != toguess[i] :
+            isWin = False
+    if isWin == True:
+          tkinter.messagebox.showinfo("Hangman", "Vous avez gagné! Cela vous à pris :" + str(len(alreadytried)) + "coups !" )
+          for i in range(len(buttons)):
+             buttons[i]["state"]= DISABLED
+            
 
 
 def restart_game():
-    global button3, count, buttons, word, letters, toguess, alreadytried,alreadytriedBad
+    global button3, count, buttons, word, letters, toguess, alreadytried,alreadytriedBad,keyword_array
     Canvas.delete("hang")
     Canvas.delete("text")
     Canvas.delete("oldline")
-
+    for i in range(len(buttons)):
+             buttons[i]["state"]= NORMAL
     count=0
     alreadytried=[]
     word=[ ]
     letters=[ ]
     alreadytriedBad=[]
+    keyword_array=[]
     print(alreadytried, "alreadytried")
     print(letters,"letters")
     print(toguess,"toguess")
@@ -307,7 +320,7 @@ def phase3():
     Canvas.create_line(10,470-10,50,470-10)
     Canvas.create_line(30,470-10,30,50)
     Canvas.create_line(30,50,200,50)
-
+    
 
     
     
@@ -319,17 +332,23 @@ def phaseAI():
      Canvas.create_line(30,470-10,30,50)
      Canvas.create_line(30,50,200,50)
      
+def AiWordPhase(keyword_array):
+    global toguess
+    keyword_array.append(keyword_list.get())
+    toguess=keyword_array[0]
+    for i in range(len(toguess)):
+        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+    
+    print(keyword_array)
      
 def phaseAI_setup():
     for i in range(len(toguess)):
         Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
-        
-    entry_text = StringVar()
-    entry = Entry(tk, bg="white", textvariable = entry_text, bd="1", cursor="dot", font = "Times 20 bold")
-    entry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.4,relheight=0.2)
     
-    entry.bind('<Return>', set_toguess(entry.get())) 
-
+    AIentry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.4,relheight=0.2)
+    
+    AIentry.bind('<Return>', set_toguess(AIentry.get())) 
+    print(set_toguess)
     
     buttonAI.destroy()
     button1.destroy()   
@@ -344,10 +363,10 @@ def phaseAI_setup():
     
     
     
-    #button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [set_toguess(entry_text).get()])
-    #button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
-    
-    
+    button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array)])
+    button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
+keyword_list=StringVar()    
+AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list)    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
 button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
 button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
@@ -457,5 +476,6 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
