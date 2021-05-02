@@ -1,0 +1,106 @@
+button3 = Button(tk, text="A", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("a"))
+    button3.place(anchor='n', relx=0.050, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="B", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("b"))
+    button3.place(anchor='n', relx=0.150, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="C", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("c"))
+    button3.place(anchor='n', relx=0.247, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="D", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("d"))
+    button3.place(anchor='n', relx=0.345, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="E", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("e"))
+    button3.place(anchor='n', relx=0.443, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="F", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("f"))
+    button3.place(anchor='n', relx=0.540, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="G", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("g"))
+    button3.place(anchor='n', relx=0.638, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="H", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("h"))
+    button3.place(anchor='n', relx=0.736, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="I", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("i"))
+    button3.place(anchor='n', relx=0.833, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="J", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("j"))
+    button3.place(anchor='n', relx=0.930, rely=0.68, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="K", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("k"))
+    button3.place(anchor='n', relx=0.050, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="L", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("l"))
+    button3.place(anchor='n', relx=0.150, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="M", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("m"))
+    button3.place(anchor='n', relx=0.247, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="N", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("n"))
+    button3.place(anchor='n', relx=0.345, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="O", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("o"))
+    button3.place(anchor='n', relx=0.443, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="P", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("p"))
+    button3.place(anchor='n', relx=0.540, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="Q", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("q"))
+    button3.place(anchor='n', relx=0.638, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="R", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("r"))
+    button3.place(anchor='n', relx=0.736, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="S", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("s"))
+    button3.place(anchor='n', relx=0.833, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="T", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("t"))
+    button3.place(anchor='n', relx=0.930, rely=0.78, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="U", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("u"))
+    button3.place(anchor='n', relx=0.247, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="V", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("v"))
+    button3.place(anchor='n', relx=0.345, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="W", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("w"))
+    button3.place(anchor='n', relx=0.443, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="X", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("x"))
+    button3.place(anchor='n', relx=0.540, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="Y", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("y"))
+    button3.place(anchor='n', relx=0.638, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+
+    button3 = Button(tk, text="Z", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("z"))
+    button3.place(anchor='n', relx=0.736, rely=0.88, relwidth=0.1, relheight=0.1)
+    buttons.append(button3)
+    button5 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup()])
+    button5.place(anchor='n', relx=0.950, rely=0.30, relwidth=0.1,relheight=0.1)
+    
