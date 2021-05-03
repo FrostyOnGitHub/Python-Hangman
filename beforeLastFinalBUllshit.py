@@ -1,6 +1,8 @@
 from tkinter import *
 import random as r
 import tkinter.messagebox
+from functools import partial
+
 tk=Tk()
 tk.geometry('1794x700')
 tk.configure(bg="deep sky blue")
@@ -85,6 +87,7 @@ def setup():
 def addLetter(guess) :
     global letters , alreadytried, buttons
     print("len", len(letters))
+    print("guess", guess)
     for i in range(len(letters)) :
         placed = 0
         if letters[i] == guess :
@@ -96,11 +99,13 @@ def addLetter(guess) :
                     placed += 1
             
             if placed != 0 :
-                
+                print("ord",ord(guess)-97)
                 buttons[ord(guess)-97].config(bg="green")
 
                 break
             else :
+                print("ord", ord(guess)-97)
+
                 alreadytriedBad.append(guess)
                 boom()
                 buttons[ord(guess)-97].config(bg="red")
@@ -211,88 +216,13 @@ def key_pressed(event) :
 
 # ---------------Creating the buttons for each letter---------------
 
-#for i in range(26) :
-#    #button3 = Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter(chr(97+i)))
-#    v_ = chr(97+i)   
-#    buttons.append(Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda a: addLetter(v_)))    
-    
-button3 = Button(tk, text="A", font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter("a"))
-buttons.append(button3)
-
-button3 = Button(tk, text="B", font='Times 20 bold', bg='light cyan', fg='white', height=1, width=1,command=lambda: addLetter("b"))
-buttons.append(button3)
-
-button3 = Button(tk, text="C", font='Times 20 bold', bg='light cyan', fg='white', height=1, width=1,command=lambda: addLetter("c"))
-buttons.append(button3)
-
-button3 = Button(tk, text="D", font='Times 20 bold', bg='light cyan', fg='white', height=1, width=1,command=lambda: addLetter("d"))
-buttons.append(button3)
-
-button3 = Button(tk, text="E", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("e"))
-buttons.append(button3)
-
-button3 = Button(tk, text="F", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("f"))
-buttons.append(button3)
-
-button3 = Button(tk, text="G", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("g"))
-buttons.append(button3)
-
-button3 = Button(tk, text="H", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("h"))
-buttons.append(button3)
-
-button3 = Button(tk, text="I", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("i"))
-buttons.append(button3)
-
-button3 = Button(tk, text="J", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("j"))
-buttons.append(button3)
-
-button3 = Button(tk, text="K", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("k"))
-buttons.append(button3)
-
-button3 = Button(tk, text="L", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("l"))
-buttons.append(button3)
-
-button3 = Button(tk, text="M", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("m"))
-buttons.append(button3)
-
-button3 = Button(tk, text="N", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("n"))
-buttons.append(button3)
-
-button3 = Button(tk, text="O", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("o"))
-buttons.append(button3)
-
-button3 = Button(tk, text="P", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("p"))
-buttons.append(button3)
-
-button3 = Button(tk, text="Q", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("q"))
-buttons.append(button3)
-
-button3 = Button(tk, text="R", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("r"))
-buttons.append(button3)
-
-button3 = Button(tk, text="S", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("s"))
-buttons.append(button3)
-
-button3 = Button(tk, text="T", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("t"))
-buttons.append(button3)
-
-button3 = Button(tk, text="U", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("u"))
-buttons.append(button3)
-
-button3 = Button(tk, text="V", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("v"))
-buttons.append(button3)
-
-button3 = Button(tk, text="W", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("w"))
-buttons.append(button3)
-
-button3 = Button(tk, text="X", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("x"))
-buttons.append(button3)
-
-button3 = Button(tk, text="Y", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("y"))
-buttons.append(button3)
-
-button3 = Button(tk, text="Z", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("z"))
-buttons.append(button3)
+for i in range(26) :
+   #button3 = Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter(chr(97+i)))
+   v_ = chr(97+i)
+   print('v',v_)
+   #f=  : addLetter(chr(97+i))
+   buttons.append(Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white',
+                         height=1, width=1,command= partial(addLetter, (chr(97+i) ))))  
 
 
 #---------------Checking for a win---------------
@@ -401,6 +331,9 @@ def AiWordPhase(keyword_array):
         print(keyword_array)
     else :
         tkinter.messagebox.showinfo("Hangman", "Mot invalide, veuillez en choisir un autre (plus de 5 lettres)" )
+        
+    labelAI.destroy()
+
 
         
  #---------------Further setting up AI page mechanics---------------   
@@ -425,14 +358,16 @@ def phaseAI_setup():
     button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [AI_Make_Guess()])
     button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
     
-    labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
+    #labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
     labelAI.place(anchor="n", relx=0.850, rely=0.65, relwidth=0.50, relheight=0.50)    
     
     button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array), restart_game(), phaseAI_setup()])
     button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
     
 #---------------Widgets defined out of functions for different pages---------------    
-keyword_list=StringVar()    
+keyword_list=StringVar()
+labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
+
 AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list, justify='center')    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
 button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
