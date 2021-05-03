@@ -25,10 +25,13 @@ keyword_array=[]
     
 alreadytriedBad = []
 
+germial = open("germinal.txt",'r')
+word_AI = open("word_AI.txt", 'r')
+AI_W_DB = []
 #---------------Creating a List based on a book---------------
-def process_data():
+def process_data(wordDB):
     fiveLetterWords= []
-    f = open("germinal.txt",'r') 
+    f = wordDB #open("germinal.txt",'r') 
     ligne = f.readline()
     while ligne!='':
         ligne = ligne.replace(',','')
@@ -56,10 +59,12 @@ def process_data():
         
 #---------------Filling a list with all the letters of the alphabet and one with all the words and picking one of those words---------------
 def setup():
-    global wordlist, letters, toguess, word 
+    global wordlist, letters, toguess, word, AI_W_DB
     for i in range(26):
         letters.append(chr(97+i))
-    wordlist=process_data()
+    wordlist=process_data(germial)
+    
+    AI_W_DB = process_data(word_AI) 
     
     print("len(w)", len(wordlist))
     toguess=wordlist[r.randint(0,len(wordlist)-1)]
@@ -106,8 +111,10 @@ def addLetter(guess) :
                     break
             if isin:
                 break
-    for i in range(len(word)):
+    for i in range(len(word)//2):
         Canvas.create_text(680+60*i,320,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
+        Canvas.create_text(680-60*i,320,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
+
     alreadytried.append(guess)
     check_win()
     check_loss()
@@ -331,6 +338,8 @@ def phase3_setup() :
     print("t", toguess)
     for i in range(len(toguess)):
         Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+        #Canvas.create_line(650-60*i,341,650+60*(i+1)-10,341, tag="oldline")
+
     
     for i in range(len(buttons)):
         buttons[i].config(bg="slate gray")
@@ -394,21 +403,21 @@ def phaseAI_setup():
     message3.destroy()
     message4.destroy()
      
-    labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
-    labelAI.place(anchor="n", relx=0.850, rely=0.65, relwidth=0.50, relheight=0.50)
+     
     button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[c(), setup(), phaseAI_settup()])
     button6.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
     button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [AI_Make_Guess()])
     button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
     
-    
+    labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
+    labelAI.place(anchor="n", relx=0.850, rely=0.65, relwidth=0.50, relheight=0.50)    
     
     button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array), restart_game(), phaseAI_setup()])
     button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
     
 #---------------Widgets defined out of functions for different pages---------------    
 keyword_list=StringVar()    
-AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list)    
+AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list, justify='center')    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
 button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
 button2 = Button(tk, text="RÈGLES DU JEU", font='Times 20 bold', bg='firebrick1', fg='black', activebackground="red", height=1, width=1, command= lambda : [phase1_end(), phase2()])
@@ -425,12 +434,14 @@ def set_toguess(w) :
 
 
 def get_probs(c_):
+    global AI_W_DB
+    
     probs = []
     
     #Generate Sublist
     subList = []
     
-    for s in (wordlist) :
+    for s in (AI_W_DB) :
         if (len(s) == len(c_)) :
             areIn = True
             
@@ -493,9 +504,29 @@ def AI_Make_Guess() :
     guess = get_probs(word)
     addLetter(guess)
     print("AI guessed ", guess)
+    check_win_AI()
+    check_loss_AI()
     
     
-    
+#---------------Checking for a win---------------
+def check_win_AI():
+    global word, togues, count, alreadytried, buttons
+    isWin = True
+    for i in range(len(toguess)) :
+        if word[i] != toguess[i] :
+            isWin = False
+    if isWin == True:
+          tkinter.messagebox.showinfo("Hangman", "L'Ordi à gagné en :" + str(len(alreadytriedBad)) + " coups !" )
+          for i in range(len(buttons)):
+             buttons[i]["state"]= DISABLED
+            
+#---------------Checking for a loss---------------            
+def check_loss_AI() :
+    global count
+    if count >= 7 :
+        tkinter.messagebox.showinfo("Hangman", "Bien joué, vous avez piégé l'Ordi!" )
+        for i in range(len(buttons)):
+            buttons[i]["state"]= DISABLED       
 
 
 
@@ -527,6 +558,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
