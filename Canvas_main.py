@@ -82,7 +82,6 @@ def addLetter(guess) :
                     print(guess)
                     word[j] = guess
                     placed += 1
-
             
             if placed != 0 :
                 
@@ -108,7 +107,9 @@ def addLetter(guess) :
     for i in range(len(word)):
         Canvas.create_text(680+60*i,325,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
     alreadytried.append(guess)
-    check_win() 
+    check_win()
+    
+    print("var", word, toguess)
 
     
     
@@ -183,7 +184,13 @@ def key_pressed(event) :
         addLetter(key)
     
 
-   
+
+
+# for i in range(26) :
+#     buttonletter = Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter(str(chr(97+i))))
+#     buttons.append(buttonletter)
+#     print(str(chr(97+i)))
+
 button3 = Button(tk, text="A", font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter("a"))
 buttons.append(button3)
 
@@ -262,10 +269,11 @@ buttons.append(button3)
 button3 = Button(tk, text="Z", font='Times 20 bold', bg='black', fg='white', height=1, width=1,command=lambda: addLetter("z"))
 buttons.append(button3)
 
+
 def check_win():
     global word, togues, count, alreadytried, buttons
     isWin = True
-    for i in range(len(word)) :
+    for i in range(len(toguess)) :
         if word[i] != toguess[i] :
             isWin = False
     if isWin == True:
@@ -281,16 +289,23 @@ def restart_game():
     Canvas.delete("text")
     Canvas.delete("oldline")
     for i in range(len(buttons)):
-             buttons[i]["state"]= NORMAL
+        buttons[i]["state"]= NORMAL
+        
     count=0
     alreadytried=[]
-    word=[ ]
+    word = []
+    for i in range(len(toguess)) :
+        word.append("")
+
     letters=[ ]
     alreadytriedBad=[]
     keyword_array=[]
     print(alreadytried, "alreadytried")
     print(letters,"letters")
     print(toguess,"toguess")
+    
+    print("length", len(word), len(toguess))
+    print("var", word, toguess)
 
 
 
@@ -335,11 +350,17 @@ def phaseAI():
 def AiWordPhase(keyword_array):
     global toguess
     keyword_array.append(keyword_list.get())
-    toguess=keyword_array[0]
-    for i in range(len(toguess)):
-        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
     
-    print(keyword_array)
+    if len(keyword_array[0]) >= 5:
+        toguess=str(keyword_array[0])
+        for i in range(len(toguess)):
+            Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+        
+        print(keyword_array)
+    else :
+        tkinter.messagebox.showinfo("Hangman", "Mot invalide, veuillez en choisir un autre (plus de 5 lettres)" )
+
+        
      
 def phaseAI_setup():
     for i in range(len(toguess)):
@@ -363,8 +384,10 @@ def phaseAI_setup():
     
     
     
-    button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array)])
+    button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array), restart_game(), phaseAI_setup()])
     button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
+    
+    
 keyword_list=StringVar()    
 AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list)    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
@@ -408,6 +431,9 @@ def get_probs(c_):
             if (areIn) :
                 subList.append(s)
                 
+    if len(subList) == 0:
+        print("subL 0")
+        return
     #print("subList : ", subList)
     
     #Find Probs                
@@ -476,6 +502,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
