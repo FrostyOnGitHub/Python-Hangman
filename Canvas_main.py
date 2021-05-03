@@ -73,6 +73,7 @@ def setup():
 
 def addLetter(guess) :
     global letters , alreadytried, buttons
+    print("len", len(letters))
     for i in range(len(letters)) :
         placed = 0
         if letters[i] == guess :
@@ -105,9 +106,10 @@ def addLetter(guess) :
             if isin:
                 break
     for i in range(len(word)):
-        Canvas.create_text(680+60*i,325,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
+        Canvas.create_text(680+60*i,320,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
     alreadytried.append(guess)
     check_win()
+    check_loss()
     
     print("var", word, toguess)
 
@@ -277,10 +279,18 @@ def check_win():
         if word[i] != toguess[i] :
             isWin = False
     if isWin == True:
-          tkinter.messagebox.showinfo("Hangman", "Vous avez gagné! Cela vous à pris :" + str(len(alreadytried)) + "coups !" )
+          tkinter.messagebox.showinfo("Hangman", "Vous avez gagné! Cela vous à pris :" + str(len(alreadytriedBad)) + " coups !" )
           for i in range(len(buttons)):
              buttons[i]["state"]= DISABLED
             
+            
+def check_loss() :
+    global count
+    if count >= 7 :
+        tkinter.messagebox.showinfo("Hangman", "Vous avez perdu!" )
+        for i in range(len(buttons)):
+            buttons[i]["state"]= DISABLED   
+    
 
 
 def restart_game():
@@ -298,6 +308,8 @@ def restart_game():
         word.append("")
 
     letters=[ ]
+    for i in range(26):
+        letters.append(chr(97+i))
     alreadytriedBad=[]
     keyword_array=[]
     print(alreadytried, "alreadytried")
@@ -377,7 +389,7 @@ def phaseAI_setup():
     message4.destroy()
      
      
-    button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup(), phaseAI_setup()])
+    button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[c(), setup(), phaseAI_settup()])
     button6.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
     button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [AI_Make_Guess()])
     button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
@@ -458,7 +470,13 @@ def get_probs(c_):
             
         #print(c, ":",  probs[l], end=" | ")
             
-    guess = chr(probs.index(max(probs))+97)
+    m = probs[0]
+    idx = 0
+    for i in range(1, len(probs)) :
+        if (m < probs[i]) :
+            idx = i
+        
+    guess = chr(idx+97)
 
             
     return guess
