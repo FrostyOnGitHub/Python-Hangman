@@ -124,8 +124,7 @@ def boom():
     if count >= 1: #Draw hook
         Canvas.create_line(200,50,200,70,tags="hang")
     if count >= 2: #Draw face
-        Canvas.create_oval(200-radius, 100-radius,
-                           200+radius, 100+radius, tags="hang")
+        Canvas.create_oval(200-radius, 100-radius, 200+radius, 100+radius, tags="hang")
     if count >= 3: #Draw first arm
         Canvas.create_line(200,150,100,100,tags="hang")
     if count >= 4: #Draw second arm
