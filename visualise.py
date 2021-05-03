@@ -29,9 +29,14 @@ germial = open("germinal.txt",'r')
 word_AI = open("word_AI.txt", 'r')
 AI_W_DB = []
 #---------------Creating a List based on a book---------------
-def process_data(wordDB):
+def process_data(isAI):
     fiveLetterWords= []
-    f = wordDB #open("germinal.txt",'r') 
+    if not isAI :
+        f = open("germinal.txt",'r')
+    else :
+        f = open("word_AI.txt", 'r') 
+    #germial = open("germinal.txt",'r')
+    #word_AI = open("word_AI.txt", 'r')
     ligne = f.readline()
     while ligne!='':
         ligne = ligne.replace(',','')
@@ -63,7 +68,7 @@ def setup():
     for i in range(26):
         letters.append(chr(97+i))
     wordlist=process_data(germial)
-    
+    print("len", len(wordlist))
     AI_W_DB = process_data(word_AI) 
     
     print("len(w)", len(wordlist))
@@ -111,9 +116,11 @@ def addLetter(guess) :
                     break
             if isin:
                 break
-    for i in range(len(word)//2):
-        Canvas.create_text(680+60*i,320,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
-        Canvas.create_text(680-60*i,320,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
+            
+    middle = 850
+    for i in range(len(word)) :
+        Canvas.create_text(middle - 60*len(toguess)//2 + 60*i + 20, 315,fill="darkblue",font="Times 30 bold",text=word[i],tag="text" )
+
 
     alreadytried.append(guess)
     check_win()
@@ -148,7 +155,7 @@ def phase1():
     game_phase[0]=0
     Canvas.place(x=0,y=0)
     
-    message1.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
+    message1.place(anchor='n', relx=0.5, rely=0.09, relwidth=0.8, relheight=0.180)
 
     
     message2.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.180)
@@ -173,9 +180,9 @@ def phase2():
 
     game_phase[0]=1
    
-    message3.place(anchor='n', relx=0.5, rely=0.1, relwidth=0.8, relheight=0.180)
+    message3.place(anchor='n', relx=0.5, rely=0.07, relwidth=0.8, relheight=0.180)
    
-    message4.place(anchor='n', relx=0.5, rely=0.25, relwidth=0.8, relheight=0.180)
+    message4.place(anchor='n', relx=0.5, rely=0.30, relwidth=0.8, relheight=0.180)
     
     button1.place(anchor='n', relx=0.5, rely=0.55, relwidth=0.8, relheight=0.2)
     
@@ -203,6 +210,12 @@ def key_pressed(event) :
 
 
 # ---------------Creating the buttons for each letter---------------
+
+#for i in range(26) :
+#    #button3 = Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter(chr(97+i)))
+#    v_ = chr(97+i)   
+#    buttons.append(Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda a: addLetter(v_)))    
+    
 button3 = Button(tk, text="A", font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter("a"))
 buttons.append(button3)
 
@@ -336,9 +349,10 @@ def restart_game():
 def phase3_setup() :
     global buttons, buttonx, buttony
     print("t", toguess)
-    for i in range(len(toguess)):
-        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
-        #Canvas.create_line(650-60*i,341,650+60*(i+1)-10,341, tag="oldline")
+    
+    middle = 850
+    for i in range(len(toguess)) :
+        Canvas.create_line(middle - 60*len(toguess)//2 + 60*i, 341, middle - 60*len(toguess)//2 + 60*i + 50, 341, tag="oldline")
 
     
     for i in range(len(buttons)):
@@ -380,8 +394,9 @@ def AiWordPhase(keyword_array):
     
     if len(keyword_array[0]) >= 5:
         toguess=str(keyword_array[0])
-        for i in range(len(toguess)):
-            Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+        middle = 850
+        for i in range(len(toguess)) :
+            Canvas.create_line(middle - 60*len(toguess)//2 + 60*i, 341, middle - 60*len(toguess)//2 + 60*i + 50, 341, tag="oldline")
         
         print(keyword_array)
     else :
@@ -390,10 +405,11 @@ def AiWordPhase(keyword_array):
         
  #---------------Further setting up AI page mechanics---------------   
 def phaseAI_setup():
-    for i in range(len(toguess)):
-        Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
+    middle = 850
+    for i in range(len(toguess)) :
+        Canvas.create_line(middle - 60*len(toguess)//2 + 60*i, 341, middle - 60*len(toguess)//2 + 60*i + 50, 341, tag="oldline")
     
-    AIentry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.4,relheight=0.2)
+    AIentry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.3,relheight=0.2)
     
     AIentry.bind('<Return>', set_toguess(AIentry.get())) 
     print(set_toguess)
@@ -404,7 +420,7 @@ def phaseAI_setup():
     message4.destroy()
      
      
-    button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[c(), setup(), phaseAI_settup()])
+    button6 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[setup(), phaseAI_setup(), restart_game()])
     button6.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
     button7= Button(tk,text="IA devine", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command=lambda : [AI_Make_Guess()])
     button7.place(anchor='n', relx=0.890, rely=0.20, relwidth=0.1, relheight=0.1)
@@ -517,16 +533,13 @@ def check_win_AI():
             isWin = False
     if isWin == True:
           tkinter.messagebox.showinfo("Hangman", "L'Ordi à gagné en :" + str(len(alreadytriedBad)) + " coups !" )
-          for i in range(len(buttons)):
-             buttons[i]["state"]= DISABLED
-            
+          
 #---------------Checking for a loss---------------            
 def check_loss_AI() :
     global count
     if count >= 7 :
         tkinter.messagebox.showinfo("Hangman", "Bien joué, vous avez piégé l'Ordi!" )
-        for i in range(len(buttons)):
-            buttons[i]["state"]= DISABLED       
+ 
 
 
 
