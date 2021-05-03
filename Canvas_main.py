@@ -8,6 +8,7 @@ tk.title("Jeu du Pendu")
 Canvas=Canvas(tk, bg="deep sky blue", width=1794, height=700)
 tk.resizable(False, False)
 
+#---------------Variable Defining---------------
 game_phase=[0]
 radius = 30
 count=0
@@ -19,13 +20,12 @@ alreadytried=[ ]
 buttonx=[0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.050,0.150,0.247,0.345,0.443,0.540,0.638,0.736,0.833,0.930,0.247,0.345,0.443,0.540,0.638,0.736]
 buttony=[0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.78,0.88,0.88,0.88,0.88,0.88,0.88]
 tk.title("Jeu de Pendu")
-#wordlist=["sebastien","memoire","secondes"]
 toguess=""
 keyword_array=[]
     
 alreadytriedBad = []
 
-
+#---------------Creating a List based on a book---------------
 def process_data():
     fiveLetterWords= []
     f = open("germinal.txt",'r') 
@@ -54,7 +54,7 @@ def process_data():
     
 
         
-
+#---------------Filling a list with all the letters of the alphabet and one with all the words and picking one of those words---------------
 def setup():
     global wordlist, letters, toguess, word 
     for i in range(26):
@@ -71,6 +71,7 @@ def setup():
 
 
 
+#---------------Main logic function that accounts for used letters/bad letters/guessed letters---------------
 def addLetter(guess) :
     global letters , alreadytried, buttons
     print("len", len(letters))
@@ -115,7 +116,7 @@ def addLetter(guess) :
 
     
     
-    
+#---------------Function to draw the Hangman---------------    
 def boom():
     global count
     count+=1
@@ -136,6 +137,7 @@ def boom():
     if count >= 7: #Draw second leg
         Canvas.create_line(200,250,300,300,tags="hang")
 
+#---------------First page setup---------------
 def phase1():
     game_phase[0]=0
     Canvas.place(x=0,y=0)
@@ -152,14 +154,15 @@ def phase1():
    
     button2.place(anchor='n', relx=0.7, rely=0.55, relwidth=0.4, relheight=0.2)
    
-
+#---------------Deleting widgets from the first page---------------
 def phase1_end() :
     message1.destroy()
     message2.destroy()
     #button1.destroy()
     button2.destroy()
 
-    
+
+#---------------Second page setup---------------
 def phase2():
 
     game_phase[0]=1
@@ -173,13 +176,16 @@ def phase2():
     buttonAI.place(anchor='n', relx=0.5, rely=0.75, relwidth=0.8, relheight=0.2)
     
     #phase2_effacer()
-    
+
+
+#---------------Deleting items from second page---------------
 def phase2_end() :
     message3.destroy()
     message4.destroy()
     button1.destroy()
     buttonAI.destroy()
-    
+ 
+#---------------Function to bind keyboard keys to letter buttons---------------
 def key_pressed(event) :
     if not Ai_status:
         key = event.char
@@ -188,11 +194,9 @@ def key_pressed(event) :
 
 
 
-# for i in range(26) :
-#     buttonletter = Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter(str(chr(97+i))))
-#     buttons.append(buttonletter)
-#     print(str(chr(97+i)))
 
+
+# ---------------Creating the buttons for each letter---------------
 button3 = Button(tk, text="A", font='Times 20 bold', bg='slate gray', fg='white', height=1, width=1,command=lambda: addLetter("a"))
 buttons.append(button3)
 
@@ -272,6 +276,7 @@ button3 = Button(tk, text="Z", font='Times 20 bold', bg='black', fg='white', hei
 buttons.append(button3)
 
 
+#---------------Checking for a win---------------
 def check_win():
     global word, togues, count, alreadytried, buttons
     isWin = True
@@ -283,7 +288,7 @@ def check_win():
           for i in range(len(buttons)):
              buttons[i]["state"]= DISABLED
             
-            
+#---------------Checking for a loss---------------            
 def check_loss() :
     global count
     if count >= 7 :
@@ -292,7 +297,7 @@ def check_loss() :
             buttons[i]["state"]= DISABLED   
     
 
-
+#---------------Function behind the restart button---------------
 def restart_game():
     global button3, count, buttons, word, letters, toguess, alreadytried,alreadytriedBad,keyword_array
     Canvas.delete("hang")
@@ -321,7 +326,7 @@ def restart_game():
 
 
 
-
+#---------------Setting up the game page---------------
 def phase3_setup() :
     global buttons, buttonx, buttony
     print("t", toguess)
@@ -337,7 +342,8 @@ def phase3_setup() :
     
     button5 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup(), phase3_setup()])
     button5.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
-    
+  
+ #---------------Game page Widgets--------------- 
 def phase3():
     global toguess, word
     game_phase[0]=2
@@ -350,7 +356,7 @@ def phase3():
     
 
     
-    
+#---------------AI page setup---------------    
 def phaseAI():
      Ai_status=True
      game_phase[0]=3
@@ -358,7 +364,8 @@ def phaseAI():
      Canvas.create_line(10,470-10,50,470-10)
      Canvas.create_line(30,470-10,30,50)
      Canvas.create_line(30,50,200,50)
-     
+  
+ #---------------Getting the word entered by user input--------------- 
 def AiWordPhase(keyword_array):
     global toguess
     keyword_array.append(keyword_list.get())
@@ -373,7 +380,7 @@ def AiWordPhase(keyword_array):
         tkinter.messagebox.showinfo("Hangman", "Mot invalide, veuillez en choisir un autre (plus de 5 lettres)" )
 
         
-     
+ #---------------Further setting up AI page mechanics---------------   
 def phaseAI_setup():
     for i in range(len(toguess)):
         Canvas.create_line(650+60*i,341,650+60*(i+1)-10,341, tag="oldline")
@@ -399,7 +406,7 @@ def phaseAI_setup():
     button8= Button(tk,text="Chosir ce mot", font="Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda : [AiWordPhase(keyword_array), restart_game(), phaseAI_setup()])
     button8.place(anchor='n', relx=0.890, rely=0.40, relwidth=0.1, relheight=0.1)
     
-    
+#---------------Widgets defined out of functions for different pages---------------    
 keyword_list=StringVar()    
 AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list)    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
@@ -412,7 +419,7 @@ message4 = Label( tk, text="Vous pouvez appuyez sur les lettres ainsi que les to
 #button3= Button(tk, text="Retour", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = lambda : [phase2_end(), phase1()] )
 #button3= Button(tk, text="Play", font='Times 10 bold', bg='white', fg='black', height=1, width=1, command = phase3)
 
-
+#---------------AI logic functions and algorithms---------------
 def set_toguess(w) :
     toguess = w
 
@@ -496,13 +503,13 @@ def AI_Make_Guess() :
 
 setup()
 
-#print(letters)
 
 
 
+#---------------Page checking mechanism loop---------------
 
 while True:
-    #print("toguess", toguess)
+
     tk.update_idletasks()
     tk.update()
 
@@ -520,6 +527,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
