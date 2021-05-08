@@ -24,13 +24,29 @@ buttony=[0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.68,0.78,0.78,0.78,0.78,0
 tk.title("Jeu de Pendu")
 toguess=""
 keyword_array=[]
-score=0
+score='0'
 
 alreadytriedBad = []
 
 germial = open("germinal.txt",'r')
 word_AI = open("word_AI.txt", 'r')
+prev_scores = open("scores.txt", 'r')
+hs = 0
 AI_W_DB = []
+
+
+print()
+prev_scores = open("scores.txt", 'r')
+hs = prev_scores.readline()
+prev_scores.close()
+
+prev_scores = open("scores.txt", 'w')
+prev_scores.write(hs)
+print("addtotxtfile", hs)
+
+prev_scores.close()
+print("hs87", hs)
+
 #---------------Creating a List based on a book---------------
 def process_data(isAI):
     fiveLetterWords= []
@@ -67,18 +83,21 @@ def process_data(isAI):
         
 #---------------Filling a list with all the letters of the alphabet and one with all the words and picking one of those words---------------
 def setup():
-    global wordlist, letters, toguess, word, AI_W_DB
+    global wordlist, letters, toguess, word, AI_W_DB, hs
     for i in range(26):
         letters.append(chr(97+i))
-    wordlist=process_data(germial)
-    print("len", len(wordlist))
-    AI_W_DB = process_data(word_AI) 
+    wordlist=process_data(False)#germial)
+    print("lengermial", len(wordlist))
+    AI_W_DB = process_data(True)#word_AI)
+    print("lenAI", len(AI_W_DB))
     
-    print("len(w)", len(wordlist))
+    #print("len)", len(wordlist))
     toguess=wordlist[r.randint(0,len(wordlist)-1)]
     for i in range(len(toguess)):
         word.append("")
         print(toguess[i], end="")
+        
+
         
         
 
@@ -86,7 +105,7 @@ def setup():
 
 #---------------Main logic function that accounts for used letters/bad letters/guessed letters---------------
 def addLetter(guess) :
-    global letters , alreadytried, buttons, score
+    global letters , alreadytried, buttons, score, hs, prev_score
     print("len", len(letters))
     print("guess", guess)
     for i in range(len(letters)) :
@@ -102,8 +121,7 @@ def addLetter(guess) :
             if placed != 0 :
                 print("ord",ord(guess)-97)
                 buttons[ord(guess)-97].config(bg="green")
-                score+=1
-                scorelabel.config(text=score)  
+
                 
 
                 break
@@ -134,8 +152,32 @@ def addLetter(guess) :
     alreadytried.append(guess)
     check_win()
     check_loss()
-    
     print("var", word, toguess)
+    
+    
+    prev_scores = open("scores.txt", 'r')
+
+    
+    hs = prev_scores.readline()
+    print("hs150", hs)
+
+    prev_scores.close()
+    prev_scores = open("scores.txt", 'w')
+    print("test165", type(score), type(hs))
+    if (score > hs) :
+        print("!!! addtotxtfile", score)
+        prev_scores.write(score)
+        labelHS.config(text = "Record : "+ score)
+        labelHS.place(anchor='n', relx=0.890, rely=0.15, relwidth=0.1, relheight=0.1)
+
+    else :
+        print("addtotxtfile", hs)
+
+        prev_scores.write(hs)
+    prev_scores.close()
+        
+    
+
 
     
     
@@ -231,13 +273,18 @@ for i in range(26) :
 
 #---------------Checking for a win---------------
 def check_win():
-    global word, togues, count, alreadytried, buttons
+    global word, togues, count, alreadytried, buttons, score
     isWin = True
     
     for i in range(len(toguess)) :
         if word[i] != toguess[i] :
             isWin = False
     if isWin == True:
+          score = int(score)
+          score+=1
+          score = str(score)
+          scorelabel.config(text="Score : " + score)  
+        
           tkinter.messagebox.showinfo("Hangman", "Vous avez gagné! Cela vous à pris :" + str(len(alreadytriedBad)) + " coups !" )
           #scoring_possible=True
           for i in range(len(buttons)):
@@ -254,12 +301,16 @@ def check_win():
              
 #---------------Checking for a loss---------------            
 def check_loss() :
-    global count, scoring_possible
+    global count, scoring_possible, score
     if count >= 7 :
+        score = 0
+        scorelabel.config(text=score)  
+
         #scoring_possible=False
         tkinter.messagebox.showinfo("Hangman", "Vous avez perdu!" )
         for i in range(len(buttons)):
-            buttons[i]["state"]= DISABLED   
+            buttons[i]["state"]= DISABLED
+        
     
 
         
@@ -289,7 +340,7 @@ def restart_game():
     
     print("length", len(word), len(toguess))
     print("var", word, toguess)
-    score=0
+    #score=0
 
 
 #---------------Setting up the game page---------------
@@ -301,16 +352,19 @@ def phase3_setup() :
     for i in range(len(toguess)) :
         Canvas.create_line(middle - 60*len(toguess)//2 + 60*i, 341, middle - 60*len(toguess)//2 + 60*i + 50, 341, tag="oldline")
      
-    scorelabel.place(anchor='n', relx=0.890, rely=0.15, relwidth=0.1, relheight=0.1)
+    scorelabel.place(anchor='n', relx=0.890, rely=0.07, relwidth=0.1, relheight=0.1)
     for i in range(len(buttons)):
         buttons[i].config(bg="slate gray")
         buttons[i].place(anchor='n', relx=buttonx[i], rely=buttony[i], relwidth=0.1, relheight=0.1)
-    tk.bind('<Key>', key_pressed)    
+    tk.bind('<Key>', key_pressed)
+    tk.bind('<Return>', recommencer_)    
 
+    
     
     button5 = Button(tk,text="Recommencer", font = "Times 15 bold", bg="SlateBlue2", fg="white", height=1, width=1, command= lambda :[restart_game(), setup(), phase3_setup()])
     button5.place(anchor='n', relx=0.890, rely=0.30, relwidth=0.1,relheight=0.1)
-  
+    labelHS.place(anchor='n', relx=0.890, rely=0.15, relwidth=0.1, relheight=0.1)
+    
  #---------------Game page Widgets--------------- 
 def phase3():
     global toguess, word
@@ -321,8 +375,13 @@ def phase3():
     Canvas.create_line(10,470-10,50,470-10)
     Canvas.create_line(30,470-10,30,50)
     Canvas.create_line(30,50,200,50)
-    
 
+    
+def recommencer_(event) :
+    restart_game()
+    setup()
+    phase3_setup()
+    
     
 #---------------AI page setup---------------    
 def phaseAI():
@@ -348,7 +407,7 @@ def AiWordPhase(keyword_array):
     else :
         tkinter.messagebox.showinfo("Hangman", "Mot invalide, veuillez en choisir un autre (plus de 5 lettres)" )
         
-    labelAI.destroy()
+    #labelAI.destroy()
 
 
         
@@ -382,8 +441,13 @@ def phaseAI_setup():
     
 #---------------Widgets defined out of functions for different pages---------------    
 keyword_list=StringVar()
-labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1,)
-scorelabel=Label(tk,text=score , font="Times 20 bold", bg="deep sky blue", height=1, width=1)
+txtlabelHS = "Record : " + str(hs)
+print("hs429", hs)
+labelHS = Label(tk, text=txtlabelHS, font = "Times 20 bold", bg="deep sky blue", height=1, width=1)
+txtscore = "Score : " + str(score)
+scorelabel=Label(tk,text=txtscore, font="Times 20 bold", bg="deep sky blue", height=1, width=1)
+
+labelAI = Label(tk, text="Choisir un mot et appuyer sur \n le bouton choisir ce mot", font = "Times 25 bold", bg="deep sky blue", height=1, width=1)
 AIentry = Entry(tk, bg="white", bd="1", cursor="dot", font = "Times 20 bold", textvariable=keyword_list, justify='center')    
 buttonAI = Button(tk, text="Jouer avec l'Ordi", font = 'Times 20 bold', bg='#32586E', fg='black', activebackground= "#32586E" ,height=1, width=1, command=lambda:[phaseAI_setup(), phaseAI(), phase1_end()])    
 button1 = Button(tk, text="JOUER", font='Times 20 bold', bg='green', fg='black', activebackground= "green" ,height=1, width=1, command=lambda : [phase1_end(), phase2_end(), phase3_setup(), phase3()] )
@@ -404,6 +468,10 @@ def get_probs(c_):
     global AI_W_DB
     
     probs = []
+    
+    print("!!!!!!!!!!!!!!!!!!!!!!!")
+    print()
+    print()
     
     #Generate Sublist
     subList = []
@@ -431,7 +499,7 @@ def get_probs(c_):
     if len(subList) == 0:
         print("subL 0")
         return
-    #print("subList : ", subList)
+    print("subList : ", subList)
     
     #Find Probs                
     for l in range(26) :
@@ -453,15 +521,16 @@ def get_probs(c_):
         else :
              probs.append(0)
             
-        #print(c, ":",  probs[l], end=" | ")
+        print(c, ":",  probs[l], end=" | ")
             
-    m = probs[0]
+    #m = probs[0]
     idx = 0
     for i in range(1, len(probs)) :
-        if (m < probs[i]) :
+        if (probs[idx] < probs[i]) :
             idx = i
         
     guess = chr(idx+97)
+    print("guess :::::::::", guess)
 
             
     return guess
@@ -483,7 +552,7 @@ def check_win_AI():
         if word[i] != toguess[i] :
             isWin = False
     if isWin == True:
-          tkinter.messagebox.showinfo("Hangman", "L'Ordi à gagné en :" + str(len(alreadytriedBad)) + " coups !" )
+          tkinter.messagebox.showinfo("Hangman", "L'Ordi à gagné en : " + str(len(alreadytriedBad)) + " coups !" )
           
 #---------------Checking for a loss---------------            
 def check_loss_AI() :
@@ -522,6 +591,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
