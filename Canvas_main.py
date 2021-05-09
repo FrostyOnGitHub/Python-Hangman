@@ -164,7 +164,7 @@ def addLetter(guess) :
     prev_scores.close()
     prev_scores = open("scores.txt", 'w')
     print("test165", type(score), type(hs))
-    if (score > hs) :
+    if (int(score) > int(hs)) :
         print("!!! addtotxtfile", score)
         prev_scores.write(score)
         labelHS.config(text = "Record : "+ score)
