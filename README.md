@@ -15,3 +15,9 @@ Supervised : Me trying to implement the supervised leanring alg for hangman ; fa
 # Status Update:
 
 SHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+
+Honestly bro pretty
+
+# POOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGGERRRRRS 
+imo
