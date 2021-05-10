@@ -12,6 +12,6 @@ GenAlg : Me trying to implement the genAlg for hangman; failed miserably
 Supervised : Me trying to implement the supervised leanring alg for hangman ; failed miserably
 
 
-#Status Update:
+# Status Update:
 
 SHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
