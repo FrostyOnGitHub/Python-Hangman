@@ -86,9 +86,9 @@ def setup():
     global wordlist, letters, toguess, word, AI_W_DB, hs
     for i in range(26):
         letters.append(chr(97+i))
-    wordlist=process_data(False))
+    wordlist=process_data(False)
     print("lengermial", len(wordlist))
-    AI_W_DB = process_data(True))
+    AI_W_DB = process_data(True)
     print("lenAI", len(AI_W_DB))
     
     toguess=wordlist[r.randint(0,len(wordlist)-1)]
@@ -253,7 +253,7 @@ def key_pressed(event) :
 for i in range(26) :
    v_ = chr(97+i)
    buttons.append(Button(tk, text=chr(65+i), font='Times 20 bold', bg='slate gray', fg='white',
-                         height=1, width=1,command= partial(addLetter, (chr(97+i), False ))))  
+                         height=1, width=1,command= partial(addLetter, guess = chr(97+i), isAI=False  ))) 
 
 
 #---------------Vérifier si on a gagné---------------
@@ -288,7 +288,8 @@ def check_loss() :
     global count, scoring_possible, score
     if count >= 7 :
         score = 0
-        scorelabel.config(text=score)  
+        text="Score : " + str(score)
+        scorelabel.config(text=text)  
 
         tkinter.messagebox.showinfo("Hangman", "Vous avez perdu!" )
         for i in range(len(buttons)):
@@ -565,6 +566,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
