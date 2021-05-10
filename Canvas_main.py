@@ -35,7 +35,7 @@ hs = 0
 AI_W_DB = []
 
 
-print()
+#print()
 prev_scores = open("scores.txt", 'r')
 hs = prev_scores.readline()
 prev_scores.close()
@@ -87,14 +87,14 @@ def setup():
     for i in range(26):
         letters.append(chr(97+i))
     wordlist=process_data(False)
-    print("lengermial", len(wordlist))
+    #print("lengermial", len(wordlist))
     AI_W_DB = process_data(True)
-    print("lenAI", len(AI_W_DB))
+    #print("lenAI", len(AI_W_DB))
     
     toguess=wordlist[r.randint(0,len(wordlist)-1)]
     for i in range(len(toguess)):
         word.append("")
-        print(toguess[i], end="")
+        #print(toguess[i], end="")
         
 
         
@@ -118,7 +118,6 @@ def addLetter(guess, isAI) :
             if placed != 0 :
                 buttons[ord(guess)-97].config(bg="green")
 
-                
 
                 break
             else :
@@ -145,10 +144,6 @@ def addLetter(guess, isAI) :
     if not isAI :
         check_win()
         check_loss()
-    
-    
-        
-        
     
     prev_scores = open("scores.txt", 'r')
 
@@ -373,16 +368,31 @@ def AiWordPhase(keyword_array):
     global toguess
     keyword_array.append(keyword_list.get())
     
-    if len(keyword_array[0]) >= 5:
+    correct_word = True
+    if len(keyword_array[0]) < 5 :
+        correct_word = False
+    if correct_word :
+        for i in range(len(keyword_array[0])) :
+            if keyword_array[0][i] != ' ' :
+                if 65 < ord(keyword_array[0][i]) and ord(keyword_array[0][i]) < 90   :
+                    correct_word = False
+            else :
+                correct_word = False
+
+
+    if correct_word:
         toguess=str(keyword_array[0])
         toguess = toguess.strip()
         middle = 850
         for i in range(len(toguess)) :
             Canvas.create_line(middle - 60*len(toguess)//2 + 60*i, 341, middle - 60*len(toguess)//2 + 60*i + 50, 341, tag="oldline")
         
-        print(keyword_array)
+        #print(keyword_array)
     else :
-        tkinter.messagebox.showinfo("Hangman", "Mot invalide, veuillez en choisir un autre (plus de 5 lettres)" )
+        tkinter.messagebox.showinfo("Hangman", "Le mot choisi est invalide. Vérifiez qu'il n'y ai pas de majuscules ou d'espace et qu'il fasse plus de 5 lettres." )
+
+        raise ValueError("Le mot choisi est invalide. Vérifiez qu'il n'y ai pas de majuscules ou d'espace et qu'il fasse plus de 5 lettres.")
+
 
 
         
@@ -395,7 +405,7 @@ def phaseAI_setup():
     AIentry.place(anchor='n', relx=0.450, rely=0.70, relwidth=0.3,relheight=0.2)
     
     AIentry.bind('<Return>', set_toguess(AIentry.get())) 
-    print(set_toguess)
+    #print(set_toguess)
     
     buttonAI.destroy()
     button1.destroy()   
@@ -416,7 +426,7 @@ def phaseAI_setup():
 #---------------Widgets définis à partir de fonctions pour différentes pages---------------    
 keyword_list=StringVar()
 txtlabelHS = "Record : " + str(hs)
-print("hs429", hs)
+#print("hs429", hs)
 labelHS = Label(tk, text=txtlabelHS, font = "Times 20 bold", bg="deep sky blue", height=1, width=1)
 txtscore = "Score : " + str(score)
 scorelabel=Label(tk,text=txtscore, font="Times 20 bold", bg="deep sky blue", height=1, width=1)
@@ -442,9 +452,9 @@ def get_probs(c_):
     
     probs = []
     
-    print("!!!!!!!!!!!!!!!!!!!!!!!")
-    print()
-    print()
+    #print("!!!!!!!!!!!!!!!!!!!!!!!")
+    #print()
+    #print()
     
     subList = []
     
@@ -469,14 +479,14 @@ def get_probs(c_):
                 subList.append(s)
                 
     if len(subList) == 0:
-        print("503subL 0")
+        #print("503subL 0")
         setup()
         phaseAI_setup()
         restart_game()
         tkinter.messagebox.showinfo("Hangman", "Vous avez piégé l'Ordi!")
         return None
     
-    print("subList : ", subList)
+    #print("subList : ", subList)
                    
     for l in range(26) :
         c = chr(97+l)
@@ -497,7 +507,7 @@ def get_probs(c_):
         else :
              probs.append(0)
             
-        print(c, ":",  probs[l], end=" | ")
+        #print(c, ":",  probs[l], end=" | ")
 
     idx = 0
     for i in range(1, len(probs)) :
@@ -505,7 +515,7 @@ def get_probs(c_):
             idx = i
         
     guess = chr(idx+97)
-    print("guess :::::::::", guess)
+    #print("guess :::::::::", guess)
 
             
     return guess
@@ -514,7 +524,7 @@ def get_probs(c_):
 def AI_Make_Guess() :
     guess = get_probs(word)
     addLetter(guess, True)
-    print("AI guessed ", guess)
+    #print("AI guessed ", guess)
     check_win_AI()
     check_loss_AI()
     
@@ -566,6 +576,7 @@ while True:
 Canvas.update()
 
 tk.mainloop()
+
 
 
 
