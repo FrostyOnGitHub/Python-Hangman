@@ -59,4 +59,4 @@ def get_probs(c_):
     return probs
 
 get_probs(["w", "", "r", ""])
-#print(get_probs(["w", "", "r", ""]))
+
