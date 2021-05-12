@@ -1,23 +1,4 @@
-# The-Boys-Hangman
-Yoooooooooooooooooooooooooooooo
+Hangman game created entirely from scratch. We decided to implement an AI that you can give words to for it to guess them. The game is pretty simple in itself and runs in a Canvas environment. 
 
 
-# Processing file
-I coded the game with very basic logic, can be improved. Still, translating it in python makes a game.
-
-File Name :
-Hangman : working computer, simple thing poorly coded. Basically text processing to compute the probability of each piece to be in the word
-
-GenAlg : Me trying to implement the genAlg for hangman; failed miserably
-Supervised : Me trying to implement the supervised leanring alg for hangman ; failed miserably
-
-
-# Status Update:
-
-SHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
-
-Honestly bro pretty
-
-# POOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGGERRRRRS 
-imo
+If you have any questions about this code you can contact either of us on discord : FrostyCitrus#3699 , The_Elevated_One#4557 and howdy doody#5853
